@@ -46,15 +46,16 @@
             border-radius: 8px;
             margin: 10px;
             padding: 15px;
-            width: 300px;
-            min-height: 400px;
+            width: 320px;
+            min-height: 450px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.6);
             display: flex;
             flex-direction: column;
         }
         .tarot-card img {
-            max-width: 100%;
-            height: auto;
+            width: 300px;
+            height: 400px;
+            object-fit: contain;
             align-self: center;
             margin-bottom: 12px;
         }
@@ -103,7 +104,7 @@
                         s = s.replace(/\\\\n/g, '\\n');
 
                         s = s.replace(/\\n/g, '\n');
-                        
+
                         s = s.replace(/\\n/g, '\n');
 
                         s = s.replace(/\\n/g, '\n');
