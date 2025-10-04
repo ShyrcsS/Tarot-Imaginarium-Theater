@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarot Genshin</title>
+    <style>
+        @font-face {
+            font-family: 'GenshinDrip';
+            src: url('Genshin Impact DRIP FONT.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'ZhCN';
+            src: url('zh-cn.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+        }
+        h1.site-title {
+            font-family: 'GenshinDrip', serif;
+            font-size: 56px;
+            text-align: center;
+            margin: 10px 0 24px 0;
+            color: #FFD27F;
+            text-shadow: 0 2px 0 rgba(0,0,0,0.35), 0 8px 20px rgba(255,210,127,0.12);
+            letter-spacing: 1px;
+        }
+        #tarot-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .tarot-card {
+            background-color: #1f1f1f;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            margin: 10px;
+            padding: 15px;
+            width: 300px;
+            min-height: 400px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+        }
+        .tarot-card img {
+            max-width: 100%;
+            height: auto;
+            align-self: center;
+            margin-bottom: 12px;
+        }
+        .tarot-card h2 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            text-align: center;
+            font-family: 'ZhCN', 'Noto Sans SC', Arial, sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+        }
+        .tarot-card p {
+            flex-grow: 1;
+            font-family: 'ZhCN', 'Noto Sans SC', Arial, sans-serif;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="site-title">Tarot Imaginarium Theater</h1>
+    <div id="tarot-list"></div>
+
+    <script>
+        fetch('Tarot.json')
+            .then(response => response.json())
+            .then(data => {
+                const tarotList = document.getElementById('tarot-list');
+                data.forEach(card => {
+                    const cardDiv = document.createElement('div');
+                    cardDiv.className = 'tarot-card';
+                    function escapeHtml(str) {
+                        return String(str)
+                            .replace(/&/g, '&amp;')
+                            .replace(/</g, '&lt;')
+                            .replace(/>/g, '&gt;')
+                            .replace(/"/g, '&quot;')
+                            .replace(/'/g, '&#39;');
+                    }
+
+                    function normalizeUnityString(desc) {
+                        if (typeof desc !== 'string') return '';
+
+                        let s = desc.replace(/\\"/g, '"');
+
+                        s = s.replace(/\\\\n/g, '\\n');
+
+                        s = s.replace(/\\n/g, '\n');
+                        
+                        s = s.replace(/\\n/g, '\n');
+
+                        s = s.replace(/\\n/g, '\n');
+
+                        return s.split(/\r\n|\r|\n/).map(escapeHtml).join('<br>');
+                    }
+
+                    const formattedDescription = normalizeUnityString(card.description);
+                    cardDiv.innerHTML = `
+                        <img src="${card.icon}" alt="${card.name}">
+                        <h2>${escapeHtml(card.name)}</h2>
+                        <p>${formattedDescription}</p>
+                    `;
+                    tarotList.appendChild(cardDiv);
+                });
+            })
+            .catch(error => console.error('Lỗi khi tải Tarot.json:', error));
+    </script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+# Ensure JSON files use LF in the repository
+*.json text eol=lf
